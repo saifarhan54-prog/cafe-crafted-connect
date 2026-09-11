@@ -139,3 +139,240 @@
     color-mix(in oklab, var(--background) 55%, var(--card))
   );
 }
+
+/* ========================================
+   Cinematic Animation System
+   ======================================== */
+
+@layer base {
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ---- Keyframes ---- */
+
+@keyframes elan-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes elan-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes elan-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes elan-ken-burns {
+  from { transform: scale(1); }
+  to { transform: scale(1.04); }
+}
+
+@keyframes elan-letter {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes elan-line-grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes elan-sheet-up {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes elan-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes elan-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes elan-pulse-soft {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+/* ---- Utility classes ---- */
+
+.elan-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.elan-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.elan-reveal-scale {
+  opacity: 0;
+  transform: scale(1.05);
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.elan-reveal-scale.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.elan-entrance {
+  opacity: 0;
+  animation: elan-fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.elan-entrance-fade {
+  opacity: 0;
+  animation: elan-fade-in 1s ease forwards;
+}
+
+.elan-ken-burns {
+  animation: elan-ken-burns 20s ease-out forwards;
+}
+
+.elan-delay-1 { animation-delay: 0.15s; }
+.elan-delay-2 { animation-delay: 0.3s; }
+.elan-delay-3 { animation-delay: 0.45s; }
+.elan-delay-4 { animation-delay: 0.6s; }
+.elan-delay-5 { animation-delay: 0.75s; }
+.elan-delay-6 { animation-delay: 0.9s; }
+.elan-delay-7 { animation-delay: 1.05s; }
+.elan-delay-8 { animation-delay: 1.2s; }
+
+/* ---- Bottom sheet ---- */
+
+.elan-sheet-overlay {
+  animation: elan-overlay-in 0.3s ease forwards;
+}
+
+.elan-sheet-panel {
+  animation: elan-sheet-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ---- Hotspot pulse ---- */
+
+.elan-hotspot-pulse {
+  animation: elan-pulse-soft 3s ease-in-out infinite;
+}
+
+/* ---- Mask reveal for images ---- */
+
+.elan-mask-reveal {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.elan-mask-reveal.is-visible {
+  clip-path: inset(0 0 0 0);
+}
+
+/* ---- Nav link underline ---- */
+
+.elan-nav-link {
+  position: relative;
+}
+
+.elan-nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--primary);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.elan-nav-link:hover::after,
+.elan-nav-link[data-active="true"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ---- Hide scrollbar ---- */
+
+.elan-no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.elan-no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ---- Lightbox ---- */
+
+.elan-lightbox-img {
+  animation: elan-scale-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elan-reveal,
+  .elan-reveal-scale,
+  .elan-mask-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    transition: none !important;
+  }
+
+  .elan-entrance,
+  .elan-entrance-fade,
+  .elan-ken-burns,
+  .elan-sheet-panel,
+  .elan-sheet-overlay,
+  .elan-lightbox-img {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
