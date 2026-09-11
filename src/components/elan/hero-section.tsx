@@ -1,19 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Wine } from "lucide-react";
 import hero from "@/assets/hero.jpg";
-import { useScrollY, useMediaQuery } from "@/hooks/use-animations";
+import { useScrollY, useMediaQuery, useReducedMotion } from "@/hooks/use-animations";
 import { BottomSheet } from "@/components/elan/reveal";
 
 export function HeroSection() {
   const scrollY = useScrollY();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
   const isTouch = useMediaQuery("(hover: none)");
+  const reducedMotion = useReducedMotion();
   const parallax = Math.min(scrollY * 0.15, 80);
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setShowIntro(false);
+      return;
+    }
+    const timer = setTimeout(() => setShowIntro(false), 1800);
+    return () => clearTimeout(timer);
+  }, [reducedMotion]);
 
   return (
     <>
+      {showIntro && (
+        <div className="elan-intro">
+          <div className="elan-intro-logo">ÉLAN</div>
+          <div className="elan-intro-line" />
+        </div>
+      )}
       <section
         id="home"
         className="relative flex h-[85vh] min-h-[600px] items-end overflow-hidden sm:h-[92vh]"
@@ -58,6 +75,14 @@ export function HeroSection() {
                 : "bg-primary/0 opacity-0"
             }`}
           />
+          {isTouch && !sheetOpen && (
+            <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 text-center">
+              <div className="elan-hotspot-pulse mx-auto mb-2 h-2 w-2 rounded-full bg-primary" />
+              <p className="font-display text-xs tracking-[0.4em] text-primary/80 uppercase">
+                The Bar
+              </p>
+            </div>
+          )}
           {!isTouch && hovered && (
             <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 text-center">
               <p className="font-display text-sm tracking-[0.4em] text-primary uppercase">

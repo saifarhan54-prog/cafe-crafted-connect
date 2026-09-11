@@ -162,12 +162,32 @@
 @keyframes elan-fade-up {
   from {
     opacity: 0;
-    transform: translateY(28px);
+    transform: translateY(48px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes elan-intro-bg {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes elan-intro-logo {
+  0% { opacity: 0; transform: scale(0.8); letter-spacing: 0.8em; }
+  30% { opacity: 1; letter-spacing: 0.3em; }
+  70% { opacity: 1; transform: scale(1); letter-spacing: 0.15em; }
+  100% { opacity: 0; transform: scale(1.1); }
+}
+
+@keyframes elan-intro-line {
+  0% { transform: scaleX(0); opacity: 0; }
+  40% { transform: scaleX(1); opacity: 1; }
+  80% { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(0); opacity: 0; transform-origin: right; }
 }
 
 @keyframes elan-fade-in {
@@ -239,10 +259,10 @@
 
 .elan-reveal {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(48px);
   transition:
-    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .elan-reveal.is-visible {
@@ -252,7 +272,7 @@
 
 .elan-reveal-scale {
   opacity: 0;
-  transform: scale(1.05);
+  transform: scale(1.08);
   transition:
     opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
     transform 1s cubic-bezier(0.22, 1, 0.36, 1);
@@ -265,7 +285,7 @@
 
 .elan-entrance {
   opacity: 0;
-  animation: elan-fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: elan-fade-up 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .elan-entrance-fade {
@@ -285,6 +305,39 @@
 .elan-delay-6 { animation-delay: 0.9s; }
 .elan-delay-7 { animation-delay: 1.05s; }
 .elan-delay-8 { animation-delay: 1.2s; }
+
+/* ---- Cinematic intro ---- */
+
+.elan-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--background);
+  animation: elan-intro-bg 1.8s ease forwards;
+  pointer-events: none;
+}
+
+.elan-intro-logo {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 600;
+  color: var(--primary);
+  text-shadow: 0 0 60px color-mix(in oklab, var(--primary) 40%, transparent);
+  animation: elan-intro-logo 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.elan-intro-line {
+  margin-top: 1.5rem;
+  height: 1px;
+  width: 120px;
+  background: var(--primary);
+  transform-origin: left;
+  animation: elan-intro-line 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
 
 /* ---- Bottom sheet ---- */
 
@@ -370,9 +423,16 @@
   .elan-ken-burns,
   .elan-sheet-panel,
   .elan-sheet-overlay,
-  .elan-lightbox-img {
+  .elan-lightbox-img,
+  .elan-intro,
+  .elan-intro-logo,
+  .elan-intro-line {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .elan-intro {
+    display: none !important;
   }
 }
