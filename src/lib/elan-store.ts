@@ -354,7 +354,8 @@ export function advanceOrder(id: string) {
   const orders = s.orders.map((o) => {
     if (o.id !== id) return o;
     const idx = STATUS_FLOW.indexOf(o.status);
-    return idx < STATUS_FLOW.length - 1 ? { ...o, status: STATUS_FLOW[idx + 1] } : o;
+    const next = STATUS_FLOW[idx + 1];
+    return next ? { ...o, status: next } : o;
   });
   setState({ ...s, orders });
 }
